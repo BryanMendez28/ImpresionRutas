@@ -1,24 +1,33 @@
+const { format } = require('date-fns');
 
 exports.getRuta = (req, res) => {
+  const { fechaInicio, fechaFin, ruta } = req.query;
 
-    const { fechaInicio, fechaFin, ruta } = req.query;
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
 
-    req.getConnection((err, conn) => {
+    conn.query(
+      `
+      SELECT A.Id, B.Zona, A.Fecha, C.Nombre, A.empleado_id, A.chofer_id, D.Nombre
+      FROM ruta A
+      INNER JOIN tiporuta B ON A.TipoRuta_Id = B.Id
+      INNER JOIN empleado C ON A.empleado_id = C.Id
+      INNER JOIN empleado D ON A.chofer_id = D.Id 
+      WHERE A.Fecha BETWEEN ? AND ?
+      AND B.Zona LIKE ?
+      `,
+      [fechaInicio, fechaFin, ruta],
+      (err, result) => {
         if (err) return res.send(err);
 
+        // Formatea la fecha antes de enviarla al frontend
+        const formattedResult = result.map((item) => ({
+          ...item,
+          Fecha: format(new Date(item.Fecha), 'yyyy-MM-dd'),
+        }));
 
-        conn.query(`     
-        select A.Id, B.Zona , A.Fecha, C.Nombre, A.empleado_id, A.chofer_id, D.Nombre     from ruta A
-        inner join tiporuta B ON A.TipoRuta_Id = B.Id
-        inner join empleado C ON A.empleado_id = C.Id
-        inner join empleado D ON A.chofer_id = D.Id 
-        Where A.Fecha between ? and ?
-        AND B.Zona like ? `, [fechaInicio, fechaFin, ruta], (err, result) => {
-            if (err) return res.send(err);
-            res.send(result);
-
-        })
-    }
-
-    )
-}
+        res.send(formattedResult);
+      }
+    );
+  });
+};
