@@ -8,7 +8,7 @@ exports.getRuta = (req, res) => {
 
 
         conn.query(`     
-        select A.Id, B.Zona , A.Fecha, C.Nombre, A.empleado_id, A.chofer_id, D.Nombre     from ruta A
+        select A.Id, B.Zona , A.Fecha, C.Nombre as Operador , A.empleado_id, A.chofer_id, D.Nombre as Chofer    from ruta A
         inner join tiporuta B ON A.TipoRuta_Id = B.Id
         inner join empleado C ON A.empleado_id = C.Id
         inner join empleado D ON A.chofer_id = D.Id 
