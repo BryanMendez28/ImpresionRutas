@@ -46,9 +46,9 @@ exports.getRuta = (req, res) => {
     req.getConnection((err, conn) => {
       if (err) return res.send(err);
   
-      const query = `SELECT Zona FROM tiporuta 
-      where activo = 1 
-      OrderBy Zona
+      const query = `select Zona from tiporuta
+      where activo = 1
+      ORDER BY Zona ;
       `;
   
       conn.query(query, (err, result) => {
