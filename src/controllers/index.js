@@ -41,3 +41,20 @@ exports.getRuta = (req, res) => {
     });
   };
   
+
+  exports.getRutas = (req, res) => {
+    req.getConnection((err, conn) => {
+      if (err) return res.send(err);
+  
+      const query = 'SELECT Zona FROM tiporuta;';
+  
+      conn.query(query, (err, result) => {
+        if (err) return res.send(err);
+  
+        // Extrae las opciones de ruta de la consulta y devuelve como respuesta
+        const rutas = result.map((row) => row.Zona);
+        res.send(rutas);
+      });
+    });
+  };
+  
