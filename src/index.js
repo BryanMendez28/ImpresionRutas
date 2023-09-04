@@ -18,6 +18,7 @@ const dbConfig = {
 
 app.use(cors()); // Configura las políticas de acceso CORS
 
+
 app.use(conn(mysql, dbConfig, "single"));
 app.use(express.json())
 app.use("/",route);
