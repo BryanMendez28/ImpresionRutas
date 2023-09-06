@@ -50,7 +50,8 @@ exports.getRuta = (req, res) => {
       where activo = 1
       ORDER BY Zona ;
       `;
-  
+    
+      
       conn.query(query, (err, result) => {
         if (err) return res.send(err);
   
