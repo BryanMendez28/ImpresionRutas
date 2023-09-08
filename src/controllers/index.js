@@ -49,6 +49,7 @@ exports.getRuta = (req, res) => {
       const query = `select Zona from tiporuta
       where activo = 1
       ORDER BY Zona ;
+      
       `;
     
       
