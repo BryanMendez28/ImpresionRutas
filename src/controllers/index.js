@@ -11,6 +11,7 @@ exports.getRuta = (req, res) => {
         sqlQuery = `
           SELECT A.Id, B.Zona, A.Fecha, C.Nombre as Operador, A.empleado_id, A.chofer_id, D.Nombre as Chofer
           FROM ruta A
+          
           LEFT JOIN tiporuta B ON A.TipoRuta_Id = B.Id
           LEFT JOIN empleado C ON A.empleado_id = C.Id
           LEFT JOIN empleado D ON A.chofer_id = D.Id 
